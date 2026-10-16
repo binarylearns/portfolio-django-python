@@ -2,9 +2,15 @@
 
 A modern, responsive personal portfolio website built with **Tailwind CSS** and vanilla **JavaScript**. Features a bold yellow-and-black color scheme, smooth animations, and a fully functional dark/light mode toggle.
 
-![Portfolio Preview](preview.png)
-<!-- Replace the line above with an actual screenshot of your site -->
-<!-- Tip: upload a screenshot to your repo root and name it preview.png -->
+![Portfolio Preview]
+<img width="1534" height="708" alt="image" src="https://github.com/user-attachments/assets/53feb511-995e-4862-a626-1f83a11dec1e" />
+
+<img width="1535" height="711" alt="image" src="https://github.com/user-attachments/assets/14f4a762-4fe9-4e26-bed8-b82735a2282c" />
+
+<img width="1535" height="711" alt="image" src="https://github.com/user-attachments/assets/346501bd-6d76-491c-b0e6-d34ccb896c64" />
+
+
+
 
 ---
 
