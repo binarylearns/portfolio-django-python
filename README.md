@@ -9,6 +9,9 @@ A modern, responsive personal portfolio website built with **Tailwind CSS** and 
 
 <img width="1535" height="711" alt="image" src="https://github.com/user-attachments/assets/346501bd-6d76-491c-b0e6-d34ccb896c64" />
 
+<img width="1536" height="709" alt="image" src="https://github.com/user-attachments/assets/d1dac9b0-f019-4300-9f7d-90b808caa5d7" />
+
+
 
 
 
