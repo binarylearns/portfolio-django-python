@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ishwor Adhikari — developer portfolio, yellow & black edition">
+  <title>Ishwor Adhikari · Portfolio</title>
+
+  <!-- Tailwind CSS (v3) via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Tailwind config: dark mode via class, extended yellow palette
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              yellow: '#FFD966',
+              bright: '#FFE07A',
+              deep:   '#E6B800',
+              darker: '#B38F00',
+            },
+            ink: {
+              900: '#0A0A0A',
+              800: '#111111',
+              700: '#1A1A1A',
+              600: '#2C2C2C',
+            }
+          },
+          fontFamily: {
+            display: ['"Space Grotesk"', 'Inter', 'sans-serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, sans-serif; transition: background-color .3s, color .3s; }
+
+    /* Yellow glow */
+    .glow-yellow { box-shadow: 0 0 25px rgba(255, 217, 102, 0.35); }
+
+    /* Card hover lift */
+    .card-hover { transition: transform .25s ease, box-shadow .3s ease, border-color .2s; }
+    .card-hover:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 25px 30px -12px rgba(255, 217, 102, 0.18);
+      border-color: #FFD966;
+    }
+
+    /* Skill bar transition */
+    .skill-fill { transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
+
+    /* Grid pattern */
+    .bg-grid {
+      background-image:
+        linear-gradient(rgba(255,217,102,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,217,102,0.06) 1px, transparent 1px);
+      background-size: 44px 44px;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0A0A0A; }
+    ::-webkit-scrollbar-thumb { background: #FFD966; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #FFE07A; }
+    html.light ::-webkit-scrollbar-track { background: #FFF3D1; }
+    html.light ::-webkit-scrollbar-thumb { background: #E6B800; }
+
+    /* Mobile menu */
+    .mobile-menu { max-height: 0; overflow: hidden; transition: max-height .4s ease-out; }
+    .mobile-menu.open { max-height: 500px; }
+
+    /* Active nav link */
+    .nav-link.active { color: #FFD966; font-weight: 600; }
+
+    /* Hero floating animation */
+    @keyframes floaty {
+      0%,100% { transform: translateY(0); }
+      50%     { transform: translateY(-12px); }
+    }
+    .floaty { animation: floaty 5s ease-in-out infinite; }
+
+    /* Fade-in on scroll */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+
+<body class="bg-ink-900 text-[#F0F0F0] font-sans antialiased selection:bg-brand-yellow selection:text-black">
+
+  <!-- ================= NAVIGATION ================= -->
+  <header class="fixed top-0 left-0 w-full z-50 backdrop-blur-xl border-b border-ink-600 bg-ink-900/80">
+    <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+      <!-- Logo -->
+      <a href="#home" class="font-display text-2xl font-bold tracking-tight text-brand-yellow">
+        Ishwor<span class="text-white">.</span>
+      </a>
+
+      <!-- Desktop nav -->
+      <ul class="hidden md:flex items-center space-x-8">
+        <li><a href="#home"     class="nav-link text-xs font-semibold uppercase tracking-widest text-[#B0B0B0] hover:text-brand-yellow transition-colors">Home</a></li>
+        <li><a href="#about"    class="nav-link text-xs font-semibold uppercase tracking-widest text-[#B0B0B0] hover:text-brand-yellow transition-colors">About</a></li>
+        <li><a href="#skills"   class="nav-link text-xs font-semibold uppercase tracking-widest text-[#B0B0B0] hover:text-brand-yellow transition-colors">Skills</a></li>
+        <li><a href="#projects" class="nav-link text-xs font-semibold uppercase tracking-widest text-[#B0B0B0] hover:text-brand-yellow transition-colors">Projects</a></li>
+        <li><a href="#contact"  class="nav-link text-xs font-semibold uppercase tracking-widest text-[#B0B0B0] hover:text-brand-yellow transition-colors">Contact</a></li>
+      </ul>
+
+      <div class="flex items-center gap-3">
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" type="button" aria-label="Switch to light mode"
+          class="flex items-center gap-2 px-4 py-2 rounded-full border border-ink-600 text-xs font-semibold uppercase tracking-wider text-brand-yellow hover:bg-ink-700 transition-colors">
+          <i id="theme-icon" class="fas fa-moon"></i>
+          <span id="toggle-text" class="hidden sm:inline">Dark</span>
+        </button>
+
+        <!-- Mobile menu button -->
+        <button id="mobile-menu-btn" aria-label="Open menu"
+          class="md:hidden p-2 rounded-lg text-brand-yellow hover:bg-ink-700 transition-colors">
+          <i id="mobile-icon" class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="mobile-menu md:hidden bg-ink-800 border-t border-ink-600">
+      <ul class="flex flex-col px-6 py-4 space-y-1">
+        <li><a href="#home"     class="block text-sm font-medium text-[#B0B0B0] hover:text-brand-yellow py-2.5 border-b border-ink-600/50">Home</a></li>
+        <li><a href="#about"    class="block text-sm font-medium text-[#B0B0B0] hover:text-brand-yellow py-2.5 border-b border-ink-600/50">About</a></li>
+        <li><a href="#skills"   class="block text-sm font-medium text-[#B0B0B0] hover:text-brand-yellow py-2.5 border-b border-ink-600/50">Skills</a></li>
+        <li><a href="#projects" class="block text-sm font-medium text-[#B0B0B0] hover:text-brand-yellow py-2.5 border-b border-ink-600/50">Projects</a></li>
+        <li><a href="#contact"  class="block text-sm font-medium text-[#B0B0B0] hover:text-brand-yellow py-2.5">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="pt-24">
+
+    <!-- ================= HERO ================= -->
+    <section id="home" class="relative min-h-[90vh] flex items-center bg-grid overflow-hidden">
+      <!-- Decorative blobs -->
+      <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brand-yellow/10 blur-3xl pointer-events-none"></div>
+      <div class="absolute bottom-0 right-0 w-[28rem] h-[28rem] rounded-full bg-brand-deep/10 blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-7xl mx-auto px-6 py-20 w-full grid md:grid-cols-2 gap-12 items-center relative z-10">
+        <div class="space-y-6 reveal">
+          <p class="text-brand-yellow font-display text-xs tracking-[0.35em] uppercase">Hello, welcome</p>
+          <h1 class="font-display text-5xl md:text-7xl font-bold leading-[1.05]">
+            I'm <span class="text-brand-yellow">Ishwor</span><br>Adhikari
+          </h1>
+          <p class="text-lg md:text-xl text-[#B0B0B0] max-w-lg leading-relaxed">
+            Developer, problem solver, and lifelong learner. I build digital experiences that blend clean code with bold design.
+          </p>
+          <div class="flex flex-wrap gap-4 pt-4">
+            <a href="#projects"
+              class="px-8 py-4 bg-brand-yellow text-black font-semibold rounded-full hover:bg-brand-bright transition-all shadow-lg shadow-brand-yellow/20 flex items-center gap-2">
+              <i class="fas fa-code"></i> Explore Projects
+            </a>
+            <a href="#contact"
+              class="px-8 py-4 border border-brand-yellow text-brand-yellow font-semibold rounded-full hover:bg-brand-yellow hover:text-black transition-all flex items-center gap-2">
+              <i class="fas fa-paper-plane"></i> Contact Me
+            </a>
+          </div>
+
+          <!-- Quick stats -->
+          <div class="flex gap-8 pt-6">
+            <div><span class="block text-2xl font-bold text-brand-yellow font-display">3+</span><span class="text-xs uppercase tracking-wider text-[#B0B0B0]">Years</span></div>
+            <div><span class="block text-2xl font-bold text-brand-yellow font-display">15+</span><span class="text-xs uppercase tracking-wider text-[#B0B0B0]">Projects</span></div>
+            <div><span class="block text-2xl font-bold text-brand-yellow font-display">∞</span><span class="text-xs uppercase tracking-wider text-[#B0B0B0]">Curiosity</span></div>
+          </div>
+        </div>
+
+        <!-- Avatar -->
+        <div class="hidden md:flex justify-center items-center reveal">
+          <div class="relative w-72 h-72 lg:w-96 lg:h-96 rounded-full border-4 border-brand-yellow p-3 glow-yellow floaty">
+            <div class="w-full h-full rounded-full bg-gradient-to-br from-brand-yellow to-brand-deep flex items-center justify-center text-black text-8xl font-display font-bold">
+              IA
+            </div>
+            <div class="absolute -bottom-2 -right-2 bg-ink-900 px-4 py-2 rounded-full border border-brand-yellow text-xs font-mono text-brand-yellow shadow-lg">
+              &lt;developer /&gt;
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a href="#about" aria-label="Scroll down"
+        class="absolute bottom-8 left-1/2 -translate-x-1/2 text-brand-yellow animate-bounce hidden md:block">
+        <i class="fas fa-chevron-down text-2xl"></i>
+      </a>
+    </section>
+
+    <!-- ================= ABOUT ================= -->
+    <section id="about" class="py-24 bg-ink-800 border-y border-ink-600">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row gap-16 items-center">
+
+          <div class="md:w-1/2 space-y-6 reveal">
+            <h2 class="font-display text-4xl md:text-5xl font-bold">
+              About <span class="text-brand-yellow">Me</span>
+            </h2>
+            <p class="text-[#B0B0B0] text-lg leading-relaxed">
+              I'm Ishwor Adhikari — a developer who thrives on turning complex problems into elegant solutions.
+              My journey in tech is driven by curiosity and a relentless desire to build things that matter.
+            </p>
+            <p class="text-[#B0B0B0] text-lg leading-relaxed">
+              When I'm not coding, you'll find me exploring new frameworks, contributing to open source,
+              or sketching out ideas for the next big project.
+            </p>
+            <div class="flex gap-6 pt-2">
+              <div><span class="block text-3xl font-bold text-brand-yellow font-display">3+</span><span class="text-xs uppercase tracking-wider text-[#B0B0B0]">Years Coding</span></div>
+              <div><span class="block text-3xl font-bold text-brand-yellow font-display">15+</span><span class="text-xs uppercase tracking-wider text-[#B0B0B0]">Projects</span></div>
+              <div><span class="block text-3xl font-bold text-brand-yellow font-display">∞</span><span class="text-xs uppercase tracking-wider text-[#B0B0B0]">Curiosity</span></div>
+            </div>
+          </div>
+
+          <div class="md:w-1/2 grid grid-cols-2 gap-4 reveal">
+            <div class="bg-ink-700 p-6 rounded-2xl border border-ink-600 card-hover">
+              <i class="fas fa-code text-3xl text-brand-yellow mb-3"></i>
+              <h3 class="font-semibold">Clean Code</h3>
+              <p class="text-sm text-[#B0B0B0] mt-1">Readable, maintainable, efficient.</p>
+            </div>
+            <div class="bg-ink-700 p-6 rounded-2xl border border-ink-600 card-hover">
+              <i class="fas fa-mobile-alt text-3xl text-brand-yellow mb-3"></i>
+              <h3 class="font-semibold">Responsive</h3>
+              <p class="text-sm text-[#B0B0B0] mt-1">Looks great on every screen.</p>
+            </div>
+            <div class="bg-ink-700 p-6 rounded-2xl border border-ink-600 card-hover">
+              <i class="fas fa-rocket text-3xl text-brand-yellow mb-3"></i>
+              <h3 class="font-semibold">Performance</h3>
+              <p class="text-sm text-[#B0B0B0] mt-1">Fast load, smooth interactions.</p>
+            </div>
+            <div class="bg-ink-700 p-6 rounded-2xl border border-ink-600 card-hover">
+              <i class="fas fa-paint-brush text-3xl text-brand-yellow mb-3"></i>
+              <h3 class="font-semibold">Design Sense</h3>
+              <p class="text-sm text-[#B0B0B0] mt-1">Form meets function.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SKILLS ================= -->
+    <section id="skills" class="py-24 bg-ink-900">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16 reveal">
+          <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">
+            My <span class="text-brand-yellow">Skills</span>
+          </h2>
+          <p class="text-[#B0B0B0] max-w-2xl mx-auto">
+            Technologies and tools I work with to bring ideas to life.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-x-16 gap-y-10 max-w-4xl mx-auto reveal">
+          <!-- Skill -->
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-medium">HTML / CSS</span>
+              <span class="text-brand-yellow text-sm font-semibold">95%</span>
+            </div>
+            <div class="w-full h-2 bg-ink-600 rounded-full overflow-hidden">
+              <div class="skill-fill h-full bg-brand-yellow rounded-full" data-width="95%" style="width:0%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-medium">JavaScript</span>
+              <span class="text-brand-yellow text-sm font-semibold">90%</span>
+            </div>
+            <div class="w-full h-2 bg-ink-600 rounded-full overflow-hidden">
+              <div class="skill-fill h-full bg-brand-yellow rounded-full" data-width="90%" style="width:0%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-medium">React</span>
+              <span class="text-brand-yellow text-sm font-semibold">85%</span>
+            </div>
+            <div class="w-full h-2 bg-ink-600 rounded-full overflow-hidden">
+              <div class="skill-fill h-full bg-brand-yellow rounded-full" data-width="85%" style="width:0%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-medium">Node.js</span>
+              <span class="text-brand-yellow text-sm font-semibold">80%</span>
+            </div>
+            <div class="w-full h-2 bg-ink-600 rounded-full overflow-hidden">
+              <div class="skill-fill h-full bg-brand-yellow rounded-full" data-width="80%" style="width:0%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-medium">Tailwind CSS</span>
+              <span class="text-brand-yellow text-sm font-semibold">92%</span>
+            </div>
+            <div class="w-full h-2 bg-ink-600 rounded-full overflow-hidden">
+              <div class="skill-fill h-full bg-brand-yellow rounded-full" data-width="92%" style="width:0%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-medium">Git &amp; GitHub</span>
+              <span class="text-brand-yellow text-sm font-semibold">88%</span>
+            </div>
+            <div class="w-full h-2 bg-ink-600 rounded-full overflow-hidden">
+              <div class="skill-fill h-full bg-brand-yellow rounded-full" data-width="88%" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PROJECTS ================= -->
+    <section id="projects" class="py-24 bg-ink-800 border-y border-ink-600">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16 reveal">
+          <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">
+            Featured <span class="text-brand-yellow">Projects</span>
+          </h2>
+          <p class="text-[#B0B0B0] max-w-2xl mx-auto">
+            A selection of things I've built — from concept to deployment.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          <!-- Project 1 -->
+          <article class="bg-ink-700 rounded-2xl border border-ink-600 overflow-hidden card-hover reveal">
+            <div class="h-48 bg-gradient-to-br from-brand-yellow to-brand-deep flex items-center justify-center">
+              <i class="fas fa-laptop-code text-6xl text-black/70"></i>
+            </div>
+            <div class="p-6 space-y-3">
+              <h3 class="font-display text-xl font-bold">DevPortfolio</h3>
+              <p class="text-sm text-[#B0B0B0]">A responsive personal portfolio with dark mode, smooth animations, and Tailwind CSS.</p>
+              <div class="flex flex-wrap gap-2 pt-1">
+                <span class="px-3 py-1 text-[11px] font-medium rounded-full bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/30">HTML</span>
+                <span class="px-3 py-1 text-[11px] font-medium rounded-full bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/30">Tailwind</span>
+                <span class="px-3 py-1 text-[11px] font-medium rounded-full bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/30">JS</span>
+              </div>
+              <a href="#" class="inline-flex items-center gap-2 text-sm font-semibold text-brand-yellow hover:gap-3 transition-all pt-2">
+                View Project <i class="fas fa-arrow-right text-xs"></i>
+              </a>
+            </div>
+          </article>
+
+          <!-- Project 2 -->
+          <article class="bg-ink-700 rounded-2xl border border-ink-600 overflow-hidden card-hover reveal">
+            <div class="h-48 bg-gradient-to-br from-brand-darker to-brand-yellow flex items-center justify-center">
+              <i class="fas fa-chart-line text-6xl text-black/70"></i>
+            </div>
+            <div class="p-6 space-y-3">
+              <h3 class="font-display text-xl font-bold">TaskFlow</h3>
+              <p class="text-sm text-[#B0B0B0]">A Kanban-style task manager with drag-and-drop, local storage, and a clean UI.</p>
+              <div class="flex flex-wrap gap-2 pt-1">
+                <span class="px-3 py-1 text-[11px] font-medium rounded-full bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/30">React</span>
+                <span class="px-3 py-1 text-[11px] font-medium rounded-full bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/30">Firebase</span>
+              </div>
+              <a href="#" class="inline-flex items-center gap-2 text-sm font-semibold text-brand-yellow hover:gap-3 transition-all pt-2">
+                View Project <i class="fas fa-arrow-right text-xs"></i>
+              </a>
+            </div>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="bg-ink-700 rounded-2xl border border-ink-600 overflow-hidden card-hover reveal">
+            <div class="h-48 bg-gradient-to-br from-brand-yellow via-brand-deep to-brand-darker flex items-center justify-center">
+              <i class="fas fa-cloud-sun text-6xl text-black/70"></i>
+            </div>
+            <div class="p-6 space-y-3">
+              <h3 class="font-display text-xl font-bold">WeatherNow</h3>
+              <p class="text-sm text-[#B0B0B0]">Real-time weather app with geolocation, 5-day forecast, and dynamic backgrounds.</p>
+              <div class="flex flex-wrap gap-2 pt-1">
+                <span class="px-3 py-1 text-[11px] font-medium rounded-full bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/30">API</span>
+                <span class="px-3 py-1 text-[11px] font-medium rounded-full bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/30">JS</span>
+                <span class="px-3 py-1 text-[11px] font-medium rounded-full bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/30">CSS</span>
+              </div>
+              <a href="#" class="inline-flex items-center gap-2 text-sm font-semibold text-brand-yellow hover:gap-3 transition-all pt-2">
+                View Project <i class="fas fa-arrow-right text-xs"></i>
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+    <section id="contact" class="py-24 bg-ink-900">
+      <div class="max-w-4xl mx-auto px-6 text-center">
+        <div class="reveal">
+          <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">
+            Let's <span class="text-brand-yellow">Connect</span>
+          </h2>
+          <p class="text-[#B0B0B0] text-lg max-w-2xl mx-auto mb-10">
+            Have a project in mind, a question, or just want to say hi? I'm always open to new opportunities and conversations.
+          </p>
+        </div>
+
+        <div class="bg-ink-700 rounded-3xl border border-ink-600 p-10 max-w-2xl mx-auto shadow-2xl reveal">
+          <div class="flex flex-col items-center gap-6">
+            <div class="w-20 h-20 rounded-full bg-brand-yellow/10 border border-brand-yellow flex items-center justify-center">
+              <i class="fas fa-envelope text-3xl text-brand-yellow"></i>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-widest text-[#B0B0B0] mb-1">Email me at</p>
+              <a href="mailto:ishwor@example.com"
+                class="text-2xl md:text-3xl font-display font-bold text-brand-yellow hover:underline break-all">
+                ishwor@example.com
+              </a>
+            </div>
+
+            <div class="flex gap-4 pt-2">
+              <a href="#" aria-label="GitHub"
+                class="w-12 h-12 rounded-full border border-ink-600 flex items-center justify-center text-[#B0B0B0] hover:text-brand-yellow hover:border-brand-yellow transition-all">
+                <i class="fab fa-github text-xl"></i>
+              </a>
+              <a href="#" aria-label="LinkedIn"
+                class="w-12 h-12 rounded-full border border-ink-600 flex items-center justify-center text-[#B0B0B0] hover:text-brand-yellow hover:border-brand-yellow transition-all">
+                <i class="fab fa-linkedin-in text-xl"></i>
+              </a>
+              <a href="#" aria-label="Twitter"
+                class="w-12 h-12 rounded-full border border-ink-600 flex items-center justify-center text-[#B0B0B0] hover:text-brand-yellow hover:border-brand-yellow transition-all">
+                <i class="fab fa-twitter text-xl"></i>
+              </a>
+            </div>
+
+            <a href="mailto:ishwor@example.com"
+              class="mt-4 px-8 py-4 bg-brand-yellow text-black font-semibold rounded-full hover:bg-brand-bright transition-all flex items-center gap-2">
+              <i class="fas fa-paper-plane"></i> Send Message
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-ink-800 border-t border-ink-600 py-8">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-sm text-[#B0B0B0]">&copy; 2026 Ishwor Adhikari. All rights reserved.</p>
+      <p class="text-sm text-[#B0B0B0] flex items-center gap-1.5">
+        Built with <i class="fas fa-heart text-brand-yellow"></i> and
+        <span class="text-brand-yellow font-semibold">Tailwind</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    (function () {
+      "use strict";
+
+      /* ----------------------------------------------------------
+         1. DARK / LIGHT MODE TOGGLE
+         - default: dark (html has no 'light' class)
+         - toggling adds/removes 'light' class on <html>
+         - Tailwind dark: variants are used, so we override the
+           base (non-dark) classes for light mode via CSS variables
+           in a <style> that we inject dynamically for simplicity.
+      ---------------------------------------------------------- */
+
+      const html       = document.documentElement;
+      const themeBtn   = document.getElementById('theme-toggle');
+      const themeIcon  = document.getElementById('theme-icon');
+      const toggleText = document.getElementById('toggle-text');
+
+      // ----- inject light-mode override styles -----
+      const lightStyles = document.createElement('style');
+      lightStyles.id = 'light-mode-styles';
+      lightStyles.textContent = `
+        /* LIGHT MODE: override background / text / border colors */
+        html.light body { background-color: #FFF9E6; color: #0A0A0A; }
+
+        html.light .bg-ink-900,
+        html.light .bg-ink-800,
+        html.light .bg-ink-700 { background-color: #FFFFFF !important; }
+
+        html.light header { background-color: rgba(255, 249, 230, 0.85) !important; border-color: #FFE28C !important; }
+        html.light #mobile-menu { background-color: #FFFFFF !important; border-color: #FFE28C !important; }
+
+        html.light .border-ink-600 { border-color: #FFE28C !important; }
+        html.light .border-ink-600\\/50 { border-color: rgba(255, 226, 140, 0.5) !important; }
+
+        html.light .text-\\[\\#B0B0B0\\] { color: #3A3A3A !important; }
+        html.light .text-white { color: #0A0A0A !important; }
+        html.light .text-brand-yellow { color: #B38F00 !important; }
+        html.light .hover\\:text-brand-yellow:hover { color: #B38F00 !important; }
+        html.light .border-brand-yellow { border-color: #E6B800 !important; }
+
+        html.light .bg-ink-600 { background-color: #FFE28C !important; }
+        html.light .bg-brand-yellow { background-color: #E6B800 !important; }
+        html.light .bg-brand-yellow\\/10 { background-color: rgba(230,184,0,0.12) !important; }
+        html.light .border-brand-yellow\\/30 { border-color: rgba(230,184,0,0.4) !important; }
+        html.light .text-brand-yellow.hover\\:bg-brand-yellow:hover { color: #0A0A0A !important; }
+
+        html.light .hover\\:bg-ink-700:hover { background-color: #FFF0C0 !important; }
+        html.light .hover\\:bg-brand-yellow:hover { background-color: #E6B800 !important; color: #0A0A0A !important; }
+
+        html.light ::selection { background: #E6B800; color: #0A0A0A; }
+
+        /* Light mode scrollbar handled in base style via html.light */
+      `;
+      document.head.appendChild(lightStyles);
+
+      // ----- theme helpers -----
+      function applyTheme(theme) {
+        if (theme === 'light') {
+          html.classList.add('light');
+          html.classList.remove('dark');
+          if (themeIcon) themeIcon.className = 'fas fa-sun';
+          if (toggleText) toggleText.textContent = 'Light';
+          themeBtn.setAttribute('aria-label', 'Switch to dark mode');
+        } else {
+          html.classList.remove('light');
+          html.classList.add('dark');
+          if (themeIcon) themeIcon.className = 'fas fa-moon';
+          if (toggleText) toggleText.textContent = 'Dark';
+          themeBtn.setAttribute('aria-label', 'Switch to light mode');
+        }
+        localStorage.setItem('portfolio-theme', theme);
+      }
+
+      function getSavedTheme() {
+        const saved = localStorage.getItem('portfolio-theme');
+        if (saved === 'light' || saved === 'dark') return saved;
+        // respect OS preference as fallback
+        return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
+          ? 'light' : 'dark';
+      }
+
+      // init theme
+      applyTheme(getSavedTheme());
+
+      // toggle handler
+      themeBtn.addEventListener('click', function () {
+        const isLight = html.classList.contains('light');
+        applyTheme(isLight ? 'dark' : 'light');
+      });
+
+      /* ----------------------------------------------------------
+         2. MOBILE MENU
+      ---------------------------------------------------------- */
+      const mobileBtn  = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileIcon = document.getElementById('mobile-icon');
+
+      function closeMobileMenu() {
+        mobileMenu.classList.remove('open');
+        mobileIcon.className = 'fas fa-bars text-xl';
+        mobileBtn.setAttribute('aria-label', 'Open menu');
+      }
+
+      mobileBtn.addEventListener('click', function () {
+        const isOpen = mobileMenu.classList.toggle('open');
+        mobileIcon.className = isOpen ? 'fas fa-times text-xl' : 'fas fa-bars text-xl';
+        mobileBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+      });
+
+      mobileMenu.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', closeMobileMenu);
+      });
+
+      /* ----------------------------------------------------------
+         3. ACTIVE NAV LINK ON SCROLL
+      ---------------------------------------------------------- */
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-link');
+
+      function setActiveLink() {
+        const scrollPos = window.scrollY + 140;
+        let currentId = '';
+
+        sections.forEach(function (section) {
+          if (scrollPos >= section.offsetTop &&
+              scrollPos < section.offsetTop + section.offsetHeight) {
+            currentId = section.id;
+          }
+        });
+
+        navLinks.forEach(function (link) {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + currentId) {
+            link.classList.add('active');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', setActiveLink, { passive: true });
+      window.addEventListener('load', setActiveLink);
+
+      /* ----------------------------------------------------------
+         4. REVEAL-ON-SCROLL ANIMATION
+      ---------------------------------------------------------- */
+      const revealEls = document.querySelectorAll('.reveal');
+
+      const revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+      revealEls.forEach(function (el) { revealObserver.observe(el); });
+
+      /* ----------------------------------------------------------
+         5. SKILL BAR ANIMATION (fires once when skills section
+            enters the viewport)
+      ---------------------------------------------------------- */
+      const skillFills = document.querySelectorAll('.skill-fill');
+      let skillsAnimated = false;
+
+      function animateSkills() {
+        if (skillsAnimated) return;
+
+        const skillsSection = document.getElementById('skills');
+        if (!skillsSection) return;
+
+        const rect = skillsSection.getBoundingClientRect();
+        const inView = rect.top < window.innerHeight - 120 && rect.bottom > 0;
+
+        if (inView) {
+          skillsAnimated = true;
+          skillFills.forEach(function (bar, index) {
+            const target = bar.getAttribute('data-width') || '100%';
+            setTimeout(function () {
+              bar.style.width = target;
+            }, index * 110);
+          });
+        }
+      }
+
+      window.addEventListener('scroll', animateSkills, { passive: true });
+      window.addEventListener('load', animateSkills);
+
+      /* ----------------------------------------------------------
+         6. SMOOTH SCROLL for anchor links (offset for fixed header)
+      ---------------------------------------------------------- */
+      document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+        anchor.addEventListener('click', function (e) {
+          const targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+          const targetEl = document.querySelector(targetId);
+          if (!targetEl) return;
+
+          e.preventDefault();
+          const headerOffset = 80;
+          const elementPos = targetEl.getBoundingClientRect().top + window.pageYOffset;
+          window.scrollTo({
+            top: elementPos - headerOffset,
+            behavior: 'smooth'
+          });
+        });
+      });
+
+    })();
+  </script>
+
+</body>
+</html>
